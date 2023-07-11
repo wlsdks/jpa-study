@@ -2,25 +2,35 @@ package com.fastcampus.jpa.bookmanager.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
  * @author jinan
  */
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
+@RequiredArgsConstructor
+@Getter
+@Setter
 @Builder
+@AllArgsConstructor
+@ToString
+@Table(name = "member")
 @Entity
-public class User {
+public class Member {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NonNull
     private String name;
+
     @NonNull
     private String email;
 
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
 
 }
