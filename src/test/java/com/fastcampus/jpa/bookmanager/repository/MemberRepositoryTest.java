@@ -1,6 +1,7 @@
 package com.fastcampus.jpa.bookmanager.repository;
 
 import com.fastcampus.jpa.bookmanager.domain.Member;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,9 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
@@ -81,6 +85,49 @@ class MemberRepositoryTest {
         member.setEmail("wlsdks1234@naver.com");
 
         memberRepository.save(member);
+    }
+
+    @Test
+    void select_테스트() {
+//        System.out.println(memberRepository.findByName("dennis"));
+//
+//        System.out.println("findByEmail : " + memberRepository.findByEmail("wlsdks12@naver.com"));
+//        System.out.println("getByEmail : " + memberRepository.getByEmail("wlsdks12@naver.com"));
+//        System.out.println("readByEmail : " + memberRepository.readByEmail("wlsdks12@naver.com"));
+//        System.out.println("queryByEmail : " + memberRepository.queryByEmail("wlsdks12@naver.com"));
+//        System.out.println("searchByEmail : " + memberRepository.searchByEmail("wlsdks12@naver.com"));
+//        System.out.println("streamByEmail : " + memberRepository.streamByEmail("wlsdks12@naver.com"));
+//        System.out.println("findMemberByEmail : " + memberRepository.findMemberByEmail("wlsdks12@naver.com"));
+//        System.out.println("findSomethingByEmail : " + memberRepository.findSomethingByEmail("wlsdks12@naver.com"));
+//
+//        // where 절에 limit가 들어간다.
+//        System.out.println("findTop1ByName : " + memberRepository.findTop1ByName("wlsdks"));
+//        System.out.println("findFirst1ByName : " + memberRepository.findFirst1ByName("wlsdks"));
+//        System.out.println("findLast1ByName : " + memberRepository.findLast1ByName("wlsdks"));
+
+//        System.out.println("findByEmailAndName : " + memberRepository.findByEmailAndName("wlsdks12@naver.com", "dennis"));
+//        System.out.println("findByEmailOrName : " + memberRepository.findByEmailOrName("wlsdks12@naver.com", "dennis"));
+//        System.out.println("findByCreatedAtAfter : " + memberRepository.findByCreatedAtAfter(LocalDateTime.now().minusDays(1L)));
+//        System.out.println("findByIdAfter : " + memberRepository.findByIdAfter(4L));
+//        System.out.println("findByCreatedAtGreaterThan : " + memberRepository.findByCreatedAtGreaterThan(LocalDateTime.now().minusDays(1L)));
+//        System.out.println("findByCreatedAtGreaterThanEqual : " + memberRepository.findByCreatedAtGreaterThanEqual(LocalDateTime.now().minusDays(1L)));
+//        System.out.println("findByCreatedAtBetween : " + memberRepository.findByCreatedAtBetween(LocalDateTime.now().minusDays(1L), LocalDateTime.now().plusDays(1L)));
+//        System.out.println("findByIdBetween : " + memberRepository.findByIdBetween(1L, 3L));
+//        System.out.println("findByIdGreaterThanEqualAndIdLessThanEqual : " + memberRepository.findByIdGreaterThanEqualAndIdLessThanEqual(1L, 3L));
+//        System.out.println("findByIdIsNotNull : " + memberRepository.findByIdIsNotNull());
+//        System.out.println("findByIdIsNotEmpty : " + memberRepository.findByIdIsNotEmpty());
+
+    }
+
+    @Test
+    void newTest() {
+//        System.out.println("findByAddressesIsNotEmpty : " + memberRepository.findByAddressesIsNotEmpty());
+//        System.out.println("findByNameIn : " + memberRepository.findByNameIn(Lists.newArrayList("wlsdks", "jinan")));
+//        System.out.println("findByNameStartingWith : " + memberRepository.findByNameStartingWith("wls"));
+//        System.out.println("findByAddressesIsNotEmpty : " + memberRepository.findByNameEndingWith("dks"));
+//        System.out.println("findByNameContains : " + memberRepository.findByNameContains("lsd"));
+        System.out.println("findByNameLike : " + memberRepository.findByNameLike("%ls%"));
+
     }
 
 }
