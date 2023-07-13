@@ -2,11 +2,15 @@ package com.fastcampus.jpa.bookmanager.repository;
 
 import com.fastcampus.jpa.bookmanager.domain.Gender;
 import com.fastcampus.jpa.bookmanager.domain.Member;
+import com.fastcampus.jpa.bookmanager.domain.UserHistory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+
+import java.util.List;
+import java.util.Set;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
@@ -214,6 +218,29 @@ class MemberRepositoryTest {
 
         memberRepository.save(member);
         userHistoryRepository.findAll().forEach(System.out::println);
+    }
+
+    @Test
+    void userRelationTest() {
+        Member member = new Member();
+        member.setName("david");
+        member.setEmail("david@fastcampus.com");
+        member.setGender(Gender.MALE);
+
+        memberRepository.save(member);
+
+        // jpa에서는 set으로 값을 변경하고 save를 하면 자동으로 update문을 쳐준다.
+        member.setName("daniel");
+        memberRepository.save(member);
+
+        // jpa에서는 set으로 값을 변경하고 save를 하면 자동으로 update문을 쳐준다.
+        member.setEmail("daniel@fastcampus.com");
+        memberRepository.save(member);
+
+        Set<UserHistory> result = memberRepository.findByEmail("daniel@fastcampus.com").getMemberHistories();
+
+        result.forEach(System.out::println);
+
     }
 
 }
