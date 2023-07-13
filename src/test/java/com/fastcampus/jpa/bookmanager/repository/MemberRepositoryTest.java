@@ -1,18 +1,12 @@
 package com.fastcampus.jpa.bookmanager.repository;
 
+import com.fastcampus.jpa.bookmanager.domain.Gender;
 import com.fastcampus.jpa.bookmanager.domain.Member;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import org.springframework.data.domain.*;
 
 import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
 
@@ -24,6 +18,9 @@ class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private UserHistoryRepository userHistoryRepository;
 
     @Test
 //    @Transactional //session이 유지됨
@@ -128,6 +125,95 @@ class MemberRepositoryTest {
 //        System.out.println("findByNameContains : " + memberRepository.findByNameContains("lsd"));
         System.out.println("findByNameLike : " + memberRepository.findByNameLike("%ls%"));
 
+    }
+
+    @Test
+    void pagingAndSortingTest() {
+//        System.out.println("findTop1ByName : " + memberRepository.findTop1ByName("wlsdks"));
+//        System.out.println("findLast1ByName : " + memberRepository.findLast1ByName("wlsdks"));
+//        System.out.println("findTopByNameOrderByIdDesc : " + memberRepository.findTopByNameOrderByIdDesc("wlsdks"));
+//        System.out.println("findFirstByNameOrderByIdDescEmailAsc : " + memberRepository.findFirstByNameOrderByIdDescEmailAsc("wlsdks"));
+        System.out.println("findFirstByNameWithSortParams : " + memberRepository.findFirstByName("wlsdks", Sort.by(Sort.Order.desc("id"), Sort.Order.asc("email"))));
+
+    }
+
+    @Test
+    void insertAndUpdateTest() {
+        Member member = new Member();
+        member.setName("wlsdks");
+        member.setEmail("wlsdks132@naver.com");
+
+        memberRepository.save(member);
+
+        Member member1 = memberRepository.findById(1L).orElseThrow(RuntimeException::new);
+        member1.setName("wlsssssssdks");
+
+        memberRepository.save(member1);
+    }
+
+    @Test
+    void enumTest() {
+        Member member = memberRepository.findById(1L).orElseThrow(RuntimeException::new);
+        member.setGender(Gender.MALE);
+
+        memberRepository.save(member);
+
+        memberRepository.findAll().forEach(System.out::println);
+        System.out.println(memberRepository.findRawRecord().get("gender"));
+    }
+
+    @Test
+    void listenerTest() {
+        Member member = new Member();
+        member.setName("martin");
+        member.setEmail("martin2@fastcampus.com");
+
+        memberRepository.save(member);
+
+        Member member1 = memberRepository.findById(1L).orElseThrow(RuntimeException::new);
+        member1.setName("marttttttin");
+
+        memberRepository.save(member1);
+
+        memberRepository.deleteById(4L);
+    }
+
+    @Test
+    void persistTest() {
+        Member member = new Member();
+        member.setEmail("martin2@fastcampus.com");
+        member.setName("martin");
+//        member.setCreatedAt(LocalDateTime.now());
+//        member.setUpdatedAt(LocalDateTime.now());
+
+        memberRepository.save(member); //insert문 날림
+
+        System.out.println(memberRepository.findByEmail("martin2@fastcampus.com"));
+    }
+
+    @Test
+    void preUpdateTest() {
+        Member member = memberRepository.findById(1L).orElseThrow(RuntimeException::new);
+
+        System.out.println("as-is : " + member);
+
+        member.setName("martin22");
+        memberRepository.save(member);
+
+        System.out.println("to-be : " + memberRepository.findAll().get(0));
+    }
+
+    @Test
+    void userHistoryTest() {
+        Member member = new Member();
+        member.setEmail("martin-new@naver.com");
+        member.setName("martin-new");
+
+        memberRepository.save(member);
+        member.setName("martin-new-new");
+
+        memberRepository.save(member);
+        userHistoryRepository.findAll().forEach(System.out::println);
     }
 
 }
