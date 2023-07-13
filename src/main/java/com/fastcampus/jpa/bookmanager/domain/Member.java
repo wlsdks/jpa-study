@@ -51,16 +51,6 @@ public class Member extends BaseEntity {
 
     @OneToMany(fetch    = FetchType.EAGER)
     private List<Address> addresses;
-//
-    // 영속전에 날짜값을 넣어준다.
-//    @PrePersist
-//    public void prePersist() {
-//        this.createdAt = LocalDateTime.now();
-//        this.updatedAt = LocalDateTime.now();
-//    }
-//    @PreUpdate
-//    public void preUpdate() {
-//        System.out.println(">>>> preUpdate");
-//    }
+
 
 }

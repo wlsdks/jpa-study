@@ -5,10 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +20,14 @@ public class Book extends BaseEntity {
 
     private String name;
 
-    private String author;
+    private String category;
+
+    private Long authorId;
+
+    private Long publisherId;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "book")
+    private BookReviewInfo bookReviewInfo;
 
 }

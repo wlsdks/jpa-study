@@ -27,10 +27,4 @@ public class UserHistory extends BaseEntity {
 
     private String email;
 
-//    @CreatedDate
-//    private LocalDateTime createdAt;
-//
-//    @LastModifiedDate
-//    private LocalDateTime updatedAt;
-
 }

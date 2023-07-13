@@ -4,10 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +16,8 @@ public class BookReviewInfo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long bookId;
+    @OneToOne(optional = false) //optional을 false로 주면 반드시 존재하는값이 된다. null을 허용하지 않는다.
+    private Book book; //entity를 바로 참조하도록 한다.
 
     private float averageReviewScore;
 
