@@ -4,27 +4,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.cglib.core.CodeGenerationException;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@Data
 @ToString(callSuper = true)
+@Data
 @NoArgsConstructor
 @Entity
-public class UserHistory extends BaseEntity {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String title;
 
-    private String email;
+    private String content;
+
+    private float score;
 
     @ManyToOne
     private Member member;
+
+    @ManyToOne
+    private Book book;
 
     @Override
     public final boolean equals(Object o) {
@@ -33,8 +37,8 @@ public class UserHistory extends BaseEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserHistory that = (UserHistory) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        Review review = (Review) o;
+        return getId() != null && Objects.equals(getId(), review.getId());
     }
 
     @Override

@@ -56,5 +56,10 @@ public class Member extends BaseEntity {
     @OneToMany(fetch = FetchType.EAGER)
     private List<UserHistory> memberHistories;
 
+    @ToString.Exclude
+    @JoinColumn(name = "member_id") // 이렇게해야 중간 테이블이 사라진다.
+    @OneToMany // OneToMany는 List로 선언될것이다.
+    private List<Review> reviews = new ArrayList<>(); // npe방지 빈 arrayList선언
+
 
 }

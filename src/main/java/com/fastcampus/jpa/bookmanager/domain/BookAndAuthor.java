@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.cglib.core.CodeGenerationException;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,18 +12,19 @@ import java.util.Objects;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @Entity
-public class UserHistory extends BaseEntity {
+public class BookAndAuthor extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-
-    private String email;
+    @ManyToOne
+    private Book book;
 
     @ManyToOne
-    private Member member;
+    private Author author;
+
+
 
     @Override
     public final boolean equals(Object o) {
@@ -33,7 +33,7 @@ public class UserHistory extends BaseEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserHistory that = (UserHistory) o;
+        BookAndAuthor that = (BookAndAuthor) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 

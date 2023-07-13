@@ -4,16 +4,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.cglib.core.CodeGenerationException;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.*;
 
-@Data
 @ToString(callSuper = true)
+@Data
 @NoArgsConstructor
 @Entity
-public class UserHistory extends BaseEntity {
+public class Author extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +20,18 @@ public class UserHistory extends BaseEntity {
 
     private String name;
 
-    private String email;
+    private String country;
 
-    @ManyToOne
-    private Member member;
+    //N:N 관계
+    @ToString.Exclude
+    @JoinColumn(name = "author_id")
+    @OneToMany
+    private List<BookAndAuthor> bookAndAuthors = new ArrayList<>(); //npe 방지
+
+    public void addBookAndAuthors(BookAndAuthor... bookAndAuthors) {
+        Collections.addAll(this.bookAndAuthors, bookAndAuthors);
+    }
+
 
     @Override
     public final boolean equals(Object o) {
@@ -33,8 +40,8 @@ public class UserHistory extends BaseEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserHistory that = (UserHistory) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        Author author = (Author) o;
+        return getId() != null && Objects.equals(getId(), author.getId());
     }
 
     @Override

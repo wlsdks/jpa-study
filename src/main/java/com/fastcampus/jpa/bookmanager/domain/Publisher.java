@@ -4,16 +4,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
-import org.springframework.cglib.core.CodeGenerationException;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-@Data
 @ToString(callSuper = true)
+@Data
 @NoArgsConstructor
 @Entity
-public class UserHistory extends BaseEntity {
+public class Publisher extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +22,18 @@ public class UserHistory extends BaseEntity {
 
     private String name;
 
-    private String email;
+    // 이 엔티티 자기 자신의 id값을 join할 컬럼명에 넣어주면 된다. 즉, Publisher라는 엔티티니까 publisher_id가 된다.
+    // 평상시엔 주로 Many가 연관관계의 주인이라 거기에 JoinColumn이 들어가지만 반대로 지금같은 상황일때는 이렇게 작성한다.
+    @JoinColumn(name = "publisher_id")
+    @OneToMany
+    private List<Book> books = new ArrayList<>();
 
-    @ManyToOne
-    private Member member;
+
+
+
+
+
+
 
     @Override
     public final boolean equals(Object o) {
@@ -33,8 +42,8 @@ public class UserHistory extends BaseEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        UserHistory that = (UserHistory) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        Publisher publisher = (Publisher) o;
+        return getId() != null && Objects.equals(getId(), publisher.getId());
     }
 
     @Override
