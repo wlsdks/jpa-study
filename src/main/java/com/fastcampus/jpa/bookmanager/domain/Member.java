@@ -51,13 +51,10 @@ public class Member extends BaseEntity {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    // EAGER가 2개 이상이면 List타입은 1개만 있어야 한다. 즉, EAGER를 하나 빼거나 LIST를 하나는 SET으로 선언해야 된다.
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Address> addresses;
-
+    @ToString.Exclude
     @JoinColumn(name = "member_id", insertable = false, updatable = false)
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<UserHistory> memberHistories;
+    private List<UserHistory> memberHistories;
 
 
 }

@@ -69,7 +69,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findByIdIsNotNull();
 
-    List<Member> findByAddressesIsNotEmpty(); // address is not null and name != '' ??
+//    List<Member> findByAddressesIsNotEmpty(); // address is not null and name != '' ??
 
     List<Member> findByNameIn(List<String> names);
 

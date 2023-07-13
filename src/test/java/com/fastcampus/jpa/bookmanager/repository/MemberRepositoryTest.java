@@ -234,12 +234,16 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         // jpa에서는 set으로 값을 변경하고 save를 하면 자동으로 update문을 쳐준다.
-        member.setEmail("daniel@fastcampus.com");
+        member.setEmail("wlsdks@fastcampus.com");
         memberRepository.save(member);
 
-        Set<UserHistory> result = memberRepository.findByEmail("daniel@fastcampus.com").getMemberHistories();
+        userHistoryRepository.findAll().forEach(System.out::println);
+
+        List<UserHistory> result = memberRepository.findByEmail("wlsdks@fastcampus.com").getMemberHistories();
 
         result.forEach(System.out::println);
+
+        System.out.println("UserHistory.getMember(): " + userHistoryRepository.findAll().get(2).getMember());
 
     }
 
