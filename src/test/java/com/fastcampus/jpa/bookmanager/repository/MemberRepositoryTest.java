@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatc
 /**
  * @author jinan
  */
+@Transactional
 @SpringBootTest //springContext를 로딩해서 test를 하겠다는 의미
 class MemberRepositoryTest {
 
@@ -222,6 +224,7 @@ class MemberRepositoryTest {
 
     @Test
     void userRelationTest() {
+
         Member member = new Member();
         member.setName("david");
         member.setEmail("david@fastcampus.com");
@@ -239,11 +242,11 @@ class MemberRepositoryTest {
 
         userHistoryRepository.findAll().forEach(System.out::println);
 
-        List<UserHistory> result = memberRepository.findByEmail("wlsdks@fastcampus.com").getMemberHistories();
+        List<UserHistory> result = memberRepository.findByEmail("wlsdks12@naver.com").getMemberHistories();
 
         result.forEach(System.out::println);
 
-        System.out.println("UserHistory.getMember(): " + userHistoryRepository.findAll().get(2).getMember());
+        System.out.println("UserHistory.getMember(): " + userHistoryRepository.findAll().get(0).getMember());
 
     }
 
