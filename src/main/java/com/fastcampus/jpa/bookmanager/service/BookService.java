@@ -5,8 +5,10 @@ import com.fastcampus.jpa.bookmanager.domain.Book;
 import com.fastcampus.jpa.bookmanager.repository.AuthorRepository;
 import com.fastcampus.jpa.bookmanager.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -20,24 +22,25 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final EntityManager entityManager;
+    private final AuthorService authorService;
 
     // 메서드의 시작이 트랜잭션의 시작이고 종료가 트랜잭션의 종료이다.
     // 트랜잭션을 안달면 save에서 트랜잭션을 동작하여 save를 사용하는것 한줄씩 트랜잭션으로 동작하게 된다.
 //    @Transactional(rollbackFor = Exception.class)
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public void putBookAndAuthor() {
         Book book = new Book();
         book.setName("JPA 시작하기");
 
         bookRepository.save(book);
 
-        Author author = new Author();
-        author.setName("martin");
+        try {
+            authorService.putAuthor();
+        } catch (RuntimeException e) {
+        }
 
-        authorRepository.save(author);
 
-//        throw new RuntimeException("오류가 나서 DB commit이 발생하지 않습니다.");
-        throw new RuntimeException("오류가 나서 DB commit이 발생하지 않습니다.");
+//        throw new RuntimeException("오류가 발생하였습니다. transaction은 어떻게 될까요?");
     }
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
@@ -54,9 +57,6 @@ public class BookService {
 
         entityManager.clear();
 
-//        Book book = bookRepository.findById(id).get();
-//        book.setName("바뀔까?");
-//        bookRepository.save(book);
     }
 
     //    // 자기 자신의 트랜잭션 메소드를 호출

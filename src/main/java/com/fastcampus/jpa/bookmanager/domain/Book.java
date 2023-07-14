@@ -1,8 +1,6 @@
 package com.fastcampus.jpa.bookmanager.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -12,7 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @ToString(callSuper = true)
 @Entity
@@ -43,7 +42,7 @@ public class Book extends BaseEntity {
     private List<Review> reviews = new ArrayList<>(); // new ArrayList<>();는 npe를 방지하기 위함이다.
 
     @ToString.Exclude
-    @ManyToOne
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private Publisher publisher;
 
     @ToString.Exclude

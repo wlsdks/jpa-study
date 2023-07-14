@@ -12,10 +12,10 @@ class MemberTest {
 
         System.out.println(">>>" + member);
 
-        Member member3 = Member.builder()
-                .name("jinan")
-                .email("wlsdks12@naver.com")
-                .build();
+//        Member member3 = Member.builder()
+//                .name("jinan")
+//                .email("wlsdks12@naver.com")
+//                .build();
     }
 
 }
