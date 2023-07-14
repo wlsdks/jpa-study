@@ -3,6 +3,7 @@ package com.fastcampus.jpa.bookmanager.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @ToString(callSuper = true)
 @Entity
+//@DynamicUpdate
 public class Book extends BaseEntity {
 
     @Id
