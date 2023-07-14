@@ -5,6 +5,7 @@ import com.fastcampus.jpa.bookmanager.domain.Member;
 import com.fastcampus.jpa.bookmanager.domain.Publisher;
 import com.fastcampus.jpa.bookmanager.domain.Review;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,6 +79,45 @@ class BookRepositoryTest {
 
         System.out.println("publishers : " + publisherRepository.findAll());
 
+    }
+
+    @Test
+    void bookRemoveCascadeTest() {
+//        bookRepository.deleteById(1L);
+
+        System.out.println("books : " + bookRepository.findAll());
+        System.out.println("publishers " + publisherRepository.findAll());
+
+        bookRepository.findAll().forEach(book -> System.out.println(book.getPublisher()));
+
+        // remove도 cascade로 묶어주면 연관된것이 같이 지워진다.
+        Book book2 = bookRepository.findById(1L).get();
+//        bookRepository.delete(book2);
+//        bookRepository.deleteById(1L);
+
+//        publisherRepository.delete(book2.getPublisher());
+
+        Book book3 = bookRepository.findById(1L).get();
+        book3.setPublisher(null);
+
+        bookRepository.save(book3);
+
+        System.out.println("books : " + bookRepository.findAll());
+        System.out.println("publishers: " + publisherRepository.findAll());
+        System.out.println("book3-publisher: " + bookRepository.findById(1L).get().getPublisher());
+
+    }
+
+    @DisplayName("flag를 활용한 soft delete방식 - 현업에서 가장 많이 사용")
+    @Test
+    void softDelete() {
+        bookRepository.findAll().forEach(System.out::println);
+        System.out.println(bookRepository.findById(3L));
+
+        bookRepository.findByCategoryIsNull().forEach(System.out::println);
+
+//        bookRepository.findAllByDeletedFalse().forEach(System.out::println);
+//        bookRepository.findByCategoryIsNullAndDeletedFalse().forEach(System.out::println);
     }
 
     // 멤버를 세팅한다.

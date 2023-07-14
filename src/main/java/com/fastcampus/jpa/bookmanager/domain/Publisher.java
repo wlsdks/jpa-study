@@ -26,7 +26,7 @@ public class Publisher extends BaseEntity {
     // 평상시엔 주로 Many가 연관관계의 주인이라 거기에 JoinColumn이 들어가지만 반대로 지금같은 상황일때는 이렇게 작성한다.
     @ToString.Exclude
     @JoinColumn(name = "publisher_id")
-    @OneToMany
+    @OneToMany(orphanRemoval = true) // orphanRemoval : cascade와 다른 고아객체 제거옵션
     private List<Book> books = new ArrayList<>();
 
     // 요즘 트랜드

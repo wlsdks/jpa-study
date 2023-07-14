@@ -2,6 +2,7 @@ package com.fastcampus.jpa.bookmanager.domain;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Where;
 import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Objects;
 @ToString(callSuper = true)
 @Entity
 //@DynamicUpdate
+@Where(clause = "deleted=false") // 이걸 넣어주면 deleted를 빼먹어서 생기는 오류를 방지할수있다.
 public class Book extends BaseEntity {
 
     @Id
@@ -42,13 +44,16 @@ public class Book extends BaseEntity {
     private List<Review> reviews = new ArrayList<>(); // new ArrayList<>();는 npe를 방지하기 위함이다.
 
     @ToString.Exclude
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE , CascadeType.REMOVE})
     private Publisher publisher;
 
     @ToString.Exclude
     @JoinColumn(name = "book_id")
     @OneToMany
     private List<BookAndAuthor> bookAndAuthors = new ArrayList<>();
+
+    // 이렇게 flag를 통해 지워졌는지 판단한다. -> 현업에서 가장 많이 사용된다.
+    private boolean deleted;
 
     public void addBookAndAuthors(BookAndAuthor... bookAndAuthors) {
         Collections.addAll(this.bookAndAuthors, bookAndAuthors);
