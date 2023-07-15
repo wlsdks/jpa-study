@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Tuple;
 import java.time.LocalDateTime;
@@ -55,6 +56,29 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(value = "select new com.fastcampus.jpa.bookmanager.dto.BookNameAndCategory(b.name as name, b.category as category) from Book b")
     Page<BookNameAndCategory> findBookNameAndCategory(Pageable pageable);
 
+    /**
+     * Native Query 사용
+     * Native Query의 문법에서는 entity속성을 사용할수 없다.(from절에는 table명이 들어감 entity가아님)
+     * Native Query를 사용하는것은 다른 db로 바꾸게 될 경우 매우 힘들게 된다. 현업에서는 이것이 중요하게 작용됨(native query는 최소한으로 사용하는것이 권장됨)
+     * 성능 최적화를 위해 사용된다.(배치 처리처럼 한번에 삭제같은 동작을 할수 있도록 하기 위함)
+     */
+    @Query(value = "select * from book", nativeQuery = true)
+    List<Book> findAllCustom();
+
+    /** 이렇게 native query로 배치처리처럼 한번의 쿼리로 업데이트 처리가 가능하다.
+     * return으로 업데이트된 row의 수를 반환받는다. affected row 라고 한다.
+     * update문은 @Modifying을 해줘야 한다.
+     * native Query를 쓸때는 @Transactional을 직접 작성해줘야 한다.
+     * native Query는 우리가 @Where에 달아준 deleted=false조건도 무시한다.
+     */
+    @Transactional
+    @Modifying
+    @Query(value = "update book set category = 'IT전문서'", nativeQuery = true)
+    int updateCategories();
+
+    // 이렇게 일반적인 jpa가 지원하지 않는 쿼리를 nativeQuery로 사용할수가 있다.
+    @Query(value = "show tables", nativeQuery = true)
+    List<String> showTables();
 
 
 }
