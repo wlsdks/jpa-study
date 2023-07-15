@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     // 팬텀 read를 제연하기위함
     @Modifying
-    @Query(value = "update Book set category = 'none'", nativeQuery = true)
+    @Query(value = "update book set category = 'none'", nativeQuery = true)
     void update();
 
     List<Book> findByCategoryIsNull();
@@ -20,6 +21,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findAllByDeletedFalse();
 
     List<Book> findByCategoryIsNullAndDeletedFalse();
+
+    List<Book> findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual(String name, LocalDateTime createdAt, LocalDateTime updatedAt);
 
 
 }

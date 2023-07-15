@@ -17,7 +17,7 @@ import java.util.Objects;
 @ToString(callSuper = true)
 @Entity
 //@DynamicUpdate
-@Where(clause = "deleted=false") // 이걸 넣어주면 deleted를 빼먹어서 생기는 오류를 방지할수있다.
+@Where(clause = "deleted=false") // 이걸 넣어주면 deleted를 빼먹어서 생기는 오류를 방지할수있다. db에는 false = 0이다.
 public class Book extends BaseEntity {
 
     @Id

@@ -8,4 +8,4 @@ insert into publisher(`id`, `name`) values (1, '패스트캠퍼스');
 
 insert into book(`id`, `name`, `publisher_id`, `deleted`) values (1, 'JPA 초격차 패키지', 1, false);
 insert into book(`id`, `name`, `publisher_id`, `deleted`) values (2, 'spring security 초격차 패키지', 1, false);
-insert into book(`id`, `name`, `publisher_id`, `deleted`) values (3, 'springBoot 올인원 패키지', 1, true);
+insert into book(`id`, `name`, `publisher_id`, `deleted`) values (3, 'springBoot 올인원 패키지', 1, true)

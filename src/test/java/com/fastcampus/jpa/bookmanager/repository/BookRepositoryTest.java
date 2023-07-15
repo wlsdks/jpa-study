@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.CascadeType;
+import java.time.LocalDateTime;
 
 @SpringBootTest
 class BookRepositoryTest {
@@ -118,6 +119,19 @@ class BookRepositoryTest {
 
 //        bookRepository.findAllByDeletedFalse().forEach(System.out::println);
 //        bookRepository.findByCategoryIsNullAndDeletedFalse().forEach(System.out::println);
+    }
+
+    @DisplayName("@Query 테스트")
+    @Test
+    void queryTest() {
+        bookRepository.findAll().forEach(System.out::println);
+
+        System.out.println("findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual : " +
+                bookRepository.findByCategoryIsNullAndNameEqualsAndCreatedAtGreaterThanEqualAndUpdatedAtGreaterThanEqual(
+                        "JPA 초격차 패키지",
+                        LocalDateTime.now().minusDays(1L),
+                        LocalDateTime.now().minusDays(1L)
+                ));
     }
 
     // 멤버를 세팅한다.
