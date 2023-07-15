@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.Tuple;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
@@ -79,6 +80,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     // 이렇게 일반적인 jpa가 지원하지 않는 쿼리를 nativeQuery로 사용할수가 있다.
     @Query(value = "show tables", nativeQuery = true)
     List<String> showTables();
+
+    // id 역순으로 1개만 가져온다.
+    // enum 이 있으면 이렇게 조회한다.
+    @Query(value = "select * from book ORDER BY id desc limit 1", nativeQuery = true)
+    Map<String, Object> findRawRecord();
 
 
 }

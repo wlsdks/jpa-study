@@ -4,6 +4,7 @@ import com.fastcampus.jpa.bookmanager.domain.Book;
 import com.fastcampus.jpa.bookmanager.domain.Member;
 import com.fastcampus.jpa.bookmanager.domain.Publisher;
 import com.fastcampus.jpa.bookmanager.domain.Review;
+import com.fastcampus.jpa.bookmanager.dto.BookStatus;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -174,6 +175,22 @@ class BookRepositoryTest {
         bookRepository.findAllCustom().forEach(System.out::println);
 
         System.out.println(bookRepository.showTables());
+    }
+
+    @DisplayName("Converter 테스트")
+    @Test
+    void converterTest() {
+        bookRepository.findAll().forEach(System.out::println);
+
+        Book book = new Book();
+        book.setName("또다른 IT전문서적");
+        book.setStatus(new BookStatus(200));
+
+        bookRepository.save(book);
+
+        System.out.println(bookRepository.findRawRecord().values());
+
+        bookRepository.findAll().forEach(System.out::println);
     }
 
     // 멤버를 세팅한다.

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 // final인 필드를 필요로하는 생성자를 만들어 준다.
@@ -57,6 +58,13 @@ public class BookService {
 
         entityManager.clear();
 
+    }
+
+    @Transactional
+    public List<Book> getAll() {
+        List<Book> books = bookRepository.findAll();
+        books.forEach(System.out::println);
+        return books;
     }
 
     //    // 자기 자신의 트랜잭션 메소드를 호출

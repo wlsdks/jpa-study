@@ -1,5 +1,7 @@
 package com.fastcampus.jpa.bookmanager.domain;
 
+import com.fastcampus.jpa.bookmanager.domain.converter.BookStatusConverter;
+import com.fastcampus.jpa.bookmanager.dto.BookStatus;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
@@ -54,6 +56,11 @@ public class Book extends BaseEntity {
 
     // 이렇게 flag를 통해 지워졌는지 판단한다. -> 현업에서 가장 많이 사용된다.
     private boolean deleted;
+
+    // 오류마크가 있는데 실행되는것은 runtime오류를 컴파일시점에 찾아준것이다.
+//    @Convert(converter = BookStatusConverter.class) // 이 어노테이션을 달아줘야 한다.(converter설정을 해줘야함)
+    // 근데 autoapply처리를 해놨으면 빨간줄 오류가 안사라지고 떠있는다.(정상이다.)
+    private BookStatus status; // 판매 상태
 
     public void addBookAndAuthors(BookAndAuthor... bookAndAuthors) {
         Collections.addAll(this.bookAndAuthors, bookAndAuthors);

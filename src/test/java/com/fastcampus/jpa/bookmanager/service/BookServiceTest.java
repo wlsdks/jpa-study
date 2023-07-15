@@ -3,10 +3,13 @@ package com.fastcampus.jpa.bookmanager.service;
 import com.fastcampus.jpa.bookmanager.domain.Book;
 import com.fastcampus.jpa.bookmanager.repository.AuthorRepository;
 import com.fastcampus.jpa.bookmanager.repository.BookRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -46,6 +49,14 @@ class BookServiceTest {
         bookService.get(1L);
 
         System.out.println(">>> " + bookRepository.findAll());
+    }
+
+    @DisplayName("Converter를 양방향 모두 구현하지 않으면 데이터가 유실된다.")
+    @Test
+    void converterErrorTest() {
+        bookService.getAll();
+
+        bookRepository.findAll().forEach(System.out::println);
     }
 
 }
