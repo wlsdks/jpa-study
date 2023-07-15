@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.CascadeType;
@@ -55,7 +56,7 @@ class BookRepositoryTest {
 
     }
 
-//    @Transactional
+    //    @Transactional
     @Test
     void bookCascadeTest() {
         Book book = new Book();
@@ -132,6 +133,25 @@ class BookRepositoryTest {
                         LocalDateTime.now().minusDays(1L),
                         LocalDateTime.now().minusDays(1L)
                 ));
+
+        // 가독성을 높인 코드
+        System.out.println("findByNameRecently : " +
+                bookRepository.findByNameRecently(
+                        "JPA 초격차 패키지",
+                        LocalDateTime.now().minusDays(1L),
+                        LocalDateTime.now().minusDays(1L))
+        );
+
+        // tuple타입으로 반환받을수가 있다.
+        System.out.println(bookRepository.findBookNameAndCategory());
+
+        // tuple안에서 0번,1번을 꺼내서 볼수가 있다.
+        bookRepository.findBookNameAndCategory().forEach(b -> System.out.println(b.getName() + " : " + b.getCategory()));
+
+        bookRepository.findBookNameAndCategory(PageRequest.of(0, 1)).forEach(
+                bookNameAndCategory -> System.out.println(bookNameAndCategory.getName() + " : " + bookNameAndCategory.getCategory())
+        );
+
     }
 
     // 멤버를 세팅한다.
@@ -172,7 +192,6 @@ class BookRepositoryTest {
     private void givenBookAndReview() {
         givenReview(givenMember(), givenBook(givenPublisher())); // 리뷰를 저장할 것이다.
     }
-
 
 
 }
