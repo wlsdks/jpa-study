@@ -1,5 +1,6 @@
 package com.fastcampus.jpa.bookmanager.repository;
 
+import com.fastcampus.jpa.bookmanager.domain.Address;
 import com.fastcampus.jpa.bookmanager.domain.Gender;
 import com.fastcampus.jpa.bookmanager.domain.Member;
 import com.fastcampus.jpa.bookmanager.domain.UserHistory;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +29,9 @@ class MemberRepositoryTest {
 
     @Autowired
     private UserHistoryRepository userHistoryRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
 //    @Transactional //session이 유지됨
@@ -247,6 +252,42 @@ class MemberRepositoryTest {
         result.forEach(System.out::println);
 
         System.out.println("UserHistory.getMember(): " + userHistoryRepository.findAll().get(0).getMember());
+
+    }
+
+    @DisplayName("embeddable 테스트")
+    @Test
+    void embedTest() {
+        memberRepository.findAll().forEach(System.out::println);
+
+        Member member = new Member();
+        member.setName("steve");
+        member.setHomeAddress(new Address("서울시", "강남구", "강남대로 364 미왕빌딩", "06241"));
+        member.setCompanyAddress(new Address("서울시", "성동구", "성수이로 113 제강빌딩", "04794"));
+
+        memberRepository.save(member);
+
+        Member member1 = new Member();
+        member1.setName("joshua");
+        member1.setHomeAddress(null);
+        member1.setCompanyAddress(null);
+
+        memberRepository.save(member1);
+
+        Member member2 = new Member();
+        member2.setName("jordan");
+        member2.setHomeAddress(new Address());
+        member2.setCompanyAddress(new Address());
+
+        memberRepository.save(member2);
+
+        // 캐시를 한번 날려준다.
+        entityManager.clear();
+
+        memberRepository.findAll().forEach(System.out::println);
+        userHistoryRepository.findAll().forEach(System.out::println);
+
+        memberRepository.findAllRawRecord().forEach(a -> System.out.println(a.values()));
 
     }
 
